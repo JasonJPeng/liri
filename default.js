@@ -37,5 +37,6 @@ var defaultMovie = {
     "Production": "Magnolia Pictures",
     "Website": "http://www.magpictures.com/mrnobody/",
     "Response": "True"
-    }
-    
+    };
+
+module.exports = defaultMovie;

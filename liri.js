@@ -51,25 +51,51 @@ function getConcert(term) {
 // http://www.omdbapi.com/?i=tt0100405&apikey=2df8f8a8  
 
 function getMovie(term) {
+    if (term === "") {
+        term = "Mr+Nobody";
+    }
     var queryUrl = `http://www.omdbapi.com/?t=${term}&apikey=2df8f8a8`;
     axios.get(queryUrl).then(
        function (response) {
            var e = response.data;
-           if (e.Response === "True") {   
+           if (e.Response === "False" ) {
+               console.log("Cannot inf your movie, Watch Mr. NoBody");
+               e = nobody;
+            }  
             console.log("\n------------------------------------");
             console.log(`${e.Title} ${e.Year} ${e.Country} ${e.Language}`);
-            console.log(`imdb rating:  ${e.imdbRating} , Rotten Tomatoes: ${e.Ratings[1].Value}`);
+            // console.log(`imdb rating:  ${e.imdbRating} , Rotten Tomatoes: ${e.Ratings[1].Value}`);
             console.log(`Actors: ${e.Actors}`);
             console.log(e.Plot);
-           } else {
-               console.log("Movie not found !");
-           }
-       } 
+      } 
     ).catch(function(error)  {
        console.log("getMovie ERROR !");
+       e = nobody;
+       console.log("No Body")
        printError(error); 
     })
 
+}
+
+
+function getSpotify(term) {
+    spotify.search({ type: 'track', query: term }, function(err, data) {
+    if (err) {
+      return console.log('Error occurred: ' + err);
+    }
+    console.log("\n------------------------------------");
+    var arrItems = data.tracks.items;
+    arrItems.forEach(function (e) {
+        // console.log(e.artists)
+        console.log(`Artists:${e.artists[0].name}   Song: ${e.name}  `);
+        console.log(`preview: ${e.preview_url}`);
+        console.log(`Album Name: ${e.album.name}`)
+        console.log("");
+    })
+       
+         
+        // console.log(data.tracks.items[2].artists); 
+      });
 }
 
 
@@ -80,22 +106,30 @@ var axios = require("axios");
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
 
+nobody = require('./default.js');
+// console.log(nobody);
+
 // console.log(spotify);
 var cmd = process.argv[2];
 if (cmd) {
     cmd = cmd.toLowerCase();
 } 
 
-var term = process.argv[3];
+var term0 = process.argv.slice(3).join(" ");
+var term = process.argv.slice(3).join("+");
+console.log(term0, term);
 
-for (var i=4; i<process.argv.length; i++) {
-    term = term + "+" + process.argv[i];
-}
+// for (var i=4; i<process.argv.length; i++) {
+//     term = term + "+" + process.argv[i];
+// }
 
 switch (cmd) {
     case "concert-this":
         getConcert(term);
         break;  
+    case "spotify-this-song":
+        getSpotify(term0);    
+        break;    
     case "movie-this":
         getMovie(term);
         break;    
