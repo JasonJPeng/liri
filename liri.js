@@ -47,6 +47,31 @@ function getConcert(term) {
     });
 }
 
+// http://www.omdbapi.com/?t=pretty+woman&apikey=2df8f8a8   search title
+// http://www.omdbapi.com/?i=tt0100405&apikey=2df8f8a8  
+
+function getMovie(term) {
+    var queryUrl = `http://www.omdbapi.com/?t=${term}&apikey=2df8f8a8`;
+    axios.get(queryUrl).then(
+       function (response) {
+           var e = response.data;
+           if (e.Response === "True") {   
+            console.log("\n------------------------------------");
+            console.log(`${e.Title} ${e.Year} ${e.Country} ${e.Language}`);
+            console.log(`imdb rating:  ${e.imdbRating} , Rotten Tomatoes: ${e.Ratings[1].Value}`);
+            console.log(`Actors: ${e.Actors}`);
+            console.log(e.Plot);
+           } else {
+               console.log("Movie not found !");
+           }
+       } 
+    ).catch(function(error)  {
+       console.log("getMovie ERROR !");
+       printError(error); 
+    })
+
+}
+
 
 var moment = require('moment');
 require("dotenv").config();
@@ -71,6 +96,9 @@ switch (cmd) {
     case "concert-this":
         getConcert(term);
         break;  
+    case "movie-this":
+        getMovie(term);
+        break;    
    
     default: console.log("ERROR");
 }
