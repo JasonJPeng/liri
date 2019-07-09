@@ -49,6 +49,7 @@ function getConcert(term) {
 
 // http://www.omdbapi.com/?t=pretty+woman&apikey=2df8f8a8   search title
 // http://www.omdbapi.com/?i=tt0100405&apikey=2df8f8a8  
+// only one movie display
 
 function getMovie(term) {
     if (term === "") {
@@ -59,12 +60,18 @@ function getMovie(term) {
        function (response) {
            var e = response.data;
            if (e.Response === "False" ) {
-               console.log("Cannot inf your movie, Watch Mr. NoBody");
+               console.log("Cannot find your movie, Watch Mr. NoBody");
                e = nobody;
             }  
+            var tomatoes = '';
+            e.Ratings.forEach(function(r){
+                if (r.Source === 'Rotten Tomatoes') {
+                   tomatoes = "Rotten Tomatoes: " + r.Value;
+                } 
+            })
             console.log("\n------------------------------------");
             console.log(`${e.Title} ${e.Year} ${e.Country} ${e.Language}`);
-            // console.log(`imdb rating:  ${e.imdbRating} , Rotten Tomatoes: ${e.Ratings[1].Value}`);
+            console.log(`imdb rating:  ${e.imdbRating} ,  ${tomatoes}`);
             console.log(`Actors: ${e.Actors}`);
             console.log(e.Plot);
       } 
@@ -87,8 +94,12 @@ function getSpotify(term) {
     var arrItems = data.tracks.items;
     arrItems.forEach(function (e) {
         // console.log(e.artists)
-        console.log(`Artists:${e.artists[0].name}   Song: ${e.name}  `);
-        console.log(`preview: ${e.preview_url}`);
+        var artistNames = Array.from(e.artists, x=>x.name).join(" ");
+        console.log(`Song: ${e.name}  `);
+        console.log('Artists: ' , artistNames)
+        if (e.preview_url === 'null') {
+           console.log(`preview: ${e.preview_url}`);
+        }   
         console.log(`Album Name: ${e.album.name}`)
         console.log("");
     })
