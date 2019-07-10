@@ -93,11 +93,12 @@ function getSpotify(term) {
     console.log("\n------------------------------------");
     var arrItems = data.tracks.items;
     arrItems.forEach(function (e) {
+        // console.log(e);
         // console.log(e.artists)
         var artistNames = Array.from(e.artists, x=>x.name).join(" ");
         console.log(`Song: ${e.name}  `);
         console.log('Artists: ' , artistNames)
-        if (e.preview_url === 'null') {
+        if (e.preview_url) {
            console.log(`preview: ${e.preview_url}`);
         }   
         console.log(`Album Name: ${e.album.name}`)
@@ -109,6 +110,45 @@ function getSpotify(term) {
       });
 }
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
+
+function doWhatever() {
+   fs.readFile(fRandom, 'utf8', function (err, info) {
+     var arr = info.split('\n').filter(x => x.trim()!=="");
+     console.log(getRandomInt(arr.length));
+     var arr1 = arr[getRandomInt(arr.length)].split(',');
+     var cmd  = arr1[0].trim();
+     var term = arr1[1].trim();
+     goAhead(cmd, term);
+
+     console.log(cmd , term);
+   })
+}
+
+function goAhead(cmd, term) {
+  var term1 = term.replace(" ", "+");
+  switch (cmd) {
+    case "concert-this":
+        getConcert(term1);
+        break;  
+    case "spotify-this-song":
+        getSpotify(term);    
+        break;    
+    case "movie-this":
+        getMovie(term1);
+        break;    
+    case "do-what-it-says":
+    default:
+        doWhatever();
+  }
+
+}
+
+//
+//   BEGIN HERE
+//
 
 var moment = require('moment');
 require("dotenv").config();
@@ -116,37 +156,28 @@ var Spotify = require('node-spotify-api');
 var axios = require("axios");
 var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
+const fs = require('fs');
+var fRandom = "./random.txt";
 
 nobody = require('./default.js');
 // console.log(nobody);
 
 // console.log(spotify);
 var cmd = process.argv[2];
+
 if (cmd) {
     cmd = cmd.toLowerCase();
 } 
 
-var term0 = process.argv.slice(3).join(" ");
-var term = process.argv.slice(3).join("+");
-console.log(term0, term);
+var term = process.argv.slice(3).join(" ");
 
 // for (var i=4; i<process.argv.length; i++) {
 //     term = term + "+" + process.argv[i];
 // }
 
-switch (cmd) {
-    case "concert-this":
-        getConcert(term);
-        break;  
-    case "spotify-this-song":
-        getSpotify(term0);    
-        break;    
-    case "movie-this":
-        getMovie(term);
-        break;    
-   
-    default: console.log("ERROR");
-}
+goAhead(cmd, term);
+
+
 
 //
 

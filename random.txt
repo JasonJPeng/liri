@@ -1,1 +1,32 @@
-spotify-this-song,"I Want it That Way"
+spotify-this-song, "I Want it That Way"
+spotify-this-song, Like a Virgin 
+
+spotify-this-song, I dont care
+spotify-this-song, Truth Hurts  
+spotify-this-song, Old Town Road 
+spotify-this-song, sucker
+spotify-this-song, sunflower
+spotify-this-song, You Need To Calm Down
+
+movie-this,   "the mule"
+ovie-this, toy story 4
+ovie-this, yesterday
+ovie-this, The Lion King
+
+concert-this, Billie Eilish
+concert-this, Jon Bellion
+concert-this, Paul McCartney
+concert-this, Vulfpeck
+
+
+
+
+
+
+
+
+
+
+
+
+
