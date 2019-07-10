@@ -30,16 +30,19 @@ function getConcert(term) {
     function(response) {
       if (response.data.length > 0 ) {
           response.data.forEach (function(e) {
-              console.log("\n------------------------------------")
-              console.log(`${e.venue.name} ${e.venue.city} ${e.venue.country}`);
-            //   console.log(moment(e.datetime));
+              // console.log("\n------------------------------------")
+              // console.log(`${e.venue.name} ${e.venue.city} ${e.venue.country}`);
               var m = moment(e.datetime).format('MM/DD/YYYY');
-              console.log(`Date: ${m}`);
+              // console.log(`Date: ${m}`);
+              resultThis += "Concert Name: " + e.venue.name + "\n";
+              resultThis += "Location:     " + e.venue.city + "     " + e.venue.country + "\n";
+              resultThis += "Date:         " + m + "\n\n";
+              printResult(resultThis); 
+              
           })
       }  else {
           console.log(term + " NOT FOUND !");
       }
-    //   console.log("The movie is released on " + response.data[0].venue.name);
     })
     .catch(function(error) {
       console.log("getConcert ERROR !");  
@@ -69,11 +72,14 @@ function getMovie(term) {
                    tomatoes = "Rotten Tomatoes: " + r.Value;
                 } 
             })
-            console.log("\n------------------------------------");
-            console.log(`${e.Title} ${e.Year} ${e.Country} ${e.Language}`);
-            console.log(`imdb rating:  ${e.imdbRating} ,  ${tomatoes}`);
-            console.log(`Actors: ${e.Actors}`);
-            console.log(e.Plot);
+          
+            resultThis += "Title: " +  e.Title + "      " + e.Year +   "\n";
+            resultThis += "Country:  " + e.Country + "    Language: " + e.Language + "\n";
+            resultThis += "Ratings:   imdb: " +   e.imdbRating + "     " + tomatoes + "\n";
+            resultThis += "Actors:  " + e.Actors + "\n";
+            resultThis += "Plot:    " + e.Plot + "\n"; 
+            printResult(resultThis);
+
       } 
     ).catch(function(error)  {
        console.log("getMovie ERROR !");
@@ -85,29 +91,23 @@ function getMovie(term) {
 }
 
 
-function getSpotify(term) {
+function getSpotify(term) {   
     spotify.search({ type: 'track', query: term }, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
-    console.log("\n------------------------------------");
     var arrItems = data.tracks.items;
     arrItems.forEach(function (e) {
-        // console.log(e);
-        // console.log(e.artists)
         var artistNames = Array.from(e.artists, x=>x.name).join(" ");
-        console.log(`Song: ${e.name}  `);
-        console.log('Artists: ' , artistNames)
-        if (e.preview_url) {
-           console.log(`preview: ${e.preview_url}`);
-        }   
-        console.log(`Album Name: ${e.album.name}`)
-        console.log("");
-    })
-       
-         
-        // console.log(data.tracks.items[2].artists); 
-      });
+        resultThis +=  `Song: ${e.name}  \n`
+        resultThis +=  'Artists: ' + artistNames + '\n';
+        if (e.preview_url) {        
+          resultThis += `preview: ${e.preview_url} \n`;
+        }        
+        resultThis += `Album Name: ${e.album.name} \n\n`;
+    })      
+     printResult(resultThis);    
+    });
 }
 
 function getRandomInt(max) {
@@ -128,6 +128,7 @@ function doWhatever() {
 }
 
 function goAhead(cmd, term) {
+  resultThis = dashLine + "\n" + cmd + "    " + term + dashLine + '\n';
   var term1 = term.replace(" ", "+");
   switch (cmd) {
     case "concert-this":
@@ -165,6 +166,11 @@ function promptCommandTerm () {
   });
 }
 
+function printResult(str) {
+  console.log(str);
+  fs.appendFile(fLog, str, function(err){});
+}
+
 //
 //   BEGIN HERE
 //
@@ -177,6 +183,9 @@ var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
 const fs = require('fs');
 var fRandom = "./random.txt";
+var fLog = "./log.txt";
+var resultThis = "";
+var dashLine = "\n-----------------------------------------------------";
 const inquirer = require('inquirer');
 
 nobody = require('./default.js');
