@@ -146,6 +146,25 @@ function goAhead(cmd, term) {
 
 }
 
+function promptCommandTerm () {
+  inquirer.prompt([{
+     type: 'list',
+     name: 'cmd',
+     message: "\n What do you want to do : \n",
+     choices: ["concert-this", "spotify-this-song", "movie-this", "do-what-it-says"]
+    },
+    {
+      type: 'input',
+      name: 'term',
+      message: 'Enter the name of an artist, song or movie ?'
+    }
+  ]).then(answers => {
+    cmd = answers.cmd;
+    term = answers.term;
+    goAhead(cmd, term);
+  });
+}
+
 //
 //   BEGIN HERE
 //
@@ -158,27 +177,16 @@ var keys = require("./keys.js");
 var spotify = new Spotify(keys.spotify);
 const fs = require('fs');
 var fRandom = "./random.txt";
+const inquirer = require('inquirer');
 
 nobody = require('./default.js');
-// console.log(nobody);
-
-// console.log(spotify);
 var cmd = process.argv[2];
+var term = "";
 
 if (cmd) {
-    cmd = cmd.toLowerCase();
-} 
-
-var term = process.argv.slice(3).join(" ");
-
-// for (var i=4; i<process.argv.length; i++) {
-//     term = term + "+" + process.argv[i];
-// }
-
-goAhead(cmd, term);
-
-
-
-//
-
-//
+  term = process.argv.slice(3).join(" ");
+  cmd = cmd.toLowerCase();  
+  goAhead(cmd, term); 
+} else {   // Interactive if no "cmd"
+  promptCommandTerm();    
+}
