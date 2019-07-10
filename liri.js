@@ -30,8 +30,6 @@ function getConcert(term) {
     function(response) {
       if (response.data.length > 0 ) {
           response.data.forEach (function(e) {
-              // console.log("\n------------------------------------")
-              // console.log(`${e.venue.name} ${e.venue.city} ${e.venue.country}`);
               var m = moment(e.datetime).format('MM/DD/YYYY');
               // console.log(`Date: ${m}`);
               resultThis += "Concert Name: " + e.venue.name + "\n";
@@ -128,7 +126,7 @@ function doWhatever() {
 }
 
 function goAhead(cmd, term) {
-  resultThis = dashLine + "\n" + cmd + "    " + term + dashLine + '\n';
+  resultThis = dashLine + "\n" + cmd + "    " + term + dashLine + "     " + moment().format('LLLL') + '\n';
   var term1 = term.replace(" ", "+");
   switch (cmd) {
     case "concert-this":
