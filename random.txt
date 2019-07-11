@@ -9,9 +9,9 @@ spotify-this-song, sunflower
 spotify-this-song, You Need To Calm Down
 
 movie-this,   "the mule"
-ovie-this, toy story 4
-ovie-this, yesterday
-ovie-this, The Lion King
+movie-this, toy story 4
+movie-this, yesterday
+movie-this, The Lion King
 
 concert-this, Billie Eilish
 concert-this, Jon Bellion
