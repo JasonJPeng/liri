@@ -5712,3 +5712,12 @@ Country:  USA    Language: English, Italian, Latin
 Ratings:   imdb: 9.2     Rotten Tomatoes: 98%
 Actors:  Marlon Brando, Al Pacino, James Caan, Richard S. Castellano
 Plot:    The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.
+
+-----------------------------------------------------
+movie-this    the mule
+-----------------------------------------------------     Wednesday, July 10, 2019 10:49 PM
+Title: The Mule      2018
+Country:  USA    Language: English, Spanish
+Ratings:   imdb: 7.1     Rotten Tomatoes: 70%
+Actors:  Clint Eastwood, Patrick L. Reyes, Cesar De León, Gustavo Muñoz
+Plot:    A 90-year-old horticulturist and Korean War veteran turns drug mule for a Mexican cartel.
